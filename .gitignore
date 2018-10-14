@@ -1,0 +1,42 @@
+.DS_Store
+*.pyc
+*~
+.*.swp
+._*
+.project
+.pydevproject
+.settings
+Thumbs.db
+outer-bin
+build
+update.sh
+rt-sandbox/**
+.env
+.vscode
+.c9/
+*.sublime-workspace
+.idea
+
+# compiled output
+/dist
+/dist-server
+/tmp
+/out-tsc
+
+# dependencies
+/node_modules
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# e2e
+/e2e/*.js
+/e2e/*.map
+
