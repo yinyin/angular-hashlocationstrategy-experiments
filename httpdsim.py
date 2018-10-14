@@ -408,6 +408,8 @@ Options:
 		HTTP port number
 	-H [HTTP_HOST] | --host=[HTP_HOST]
 		HTTP host address
+	--no-rewrite
+		Disable host page re-write
 	-h | --help
 		Help message
 
