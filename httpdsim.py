@@ -349,6 +349,12 @@ def translate_host_page(file_path):
 				yield l
 
 
+def fetch_file(file_path):
+	with open(file_path, "r") as fp:
+		for l in fp:
+			yield l
+
+
 def check_n_shift_path_prefix(environ, *args):
 	for arg in args:
 		n = shift_path_info(environ)
@@ -358,8 +364,9 @@ def check_n_shift_path_prefix(environ, *args):
 
 
 class HostpageStaticSeperatedLocation(object):
-	def __init__(self, dist_folder_path, *args, **kwds):
+	def __init__(self, no_rewrite, dist_folder_path, *args, **kwds):
 		super(HostpageStaticSeperatedLocation, self).__init__(*args, **kwds)
+		self._no_rewrite = no_rewrite
 		self._dist_folder_path = dist_folder_path
 		self._static_content_handler = StaticFileHandler(dist_folder_path)
 
@@ -367,7 +374,10 @@ class HostpageStaticSeperatedLocation(object):
 		start_response('200 OK', HEADER_NO_CACHE + [
 				("Content-Type", "text/html"),
 		])
-		return translate_host_page(joinpath(self._dist_folder_path, "index.html"))
+		p = joinpath(self._dist_folder_path, "index.html")
+		if self._no_rewrite:
+			return fetch_file(p)
+		return translate_host_page(p)
 
 	def serv_static_content(self, environ, start_response):
 		path_info = environ.get("PATH_INFO", "/")
@@ -407,10 +417,12 @@ Options:
 def _parse_option(argv):
 	http_host = "localhost"
 	http_port = 8000
+	no_rewrite = False
 	dist_folder_path = None
 	opts, args, = getopt.getopt(argv, "H:p:h", (
 			"host=",
 			"port=",
+			"no-rewrite",
 			"help",
 	))
 	for opt, arg, in opts:
@@ -418,6 +430,8 @@ def _parse_option(argv):
 			http_port = int(arg)
 		elif opt in ("-H", "--host"):
 			http_host = str(arg)
+		elif opt == "--no-rewrite":
+			no_rewrite = True
 		elif opt in ("-h", "--help"):
 			print _HELP_TEXT
 			sys.exit(1)
@@ -431,14 +445,14 @@ def _parse_option(argv):
 	aux = joinpath(dist_folder_path, "index.html")
 	if not isfile(aux):
 		raise ValueError("cannot reach index.html: %r" % (aux, ))
-	return (http_host, http_port, dist_folder_path)
+	return (http_host, http_port, no_rewrite, dist_folder_path)
 
 
 def main():
 	logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
-	http_host, http_port, dist_folder_path = _parse_option(sys.argv[1:])
-	_log.info("serving static content from: %r", dist_folder_path)
-	webapp = HostpageStaticSeperatedLocation(dist_folder_path)
+	http_host, http_port, no_rewrite, dist_folder_path = _parse_option(sys.argv[1:])
+	_log.info("serving static content from: %r (no-rewrite=%r)", dist_folder_path, no_rewrite)
+	webapp = HostpageStaticSeperatedLocation(no_rewrite, dist_folder_path)
 	httpd = make_server(http_host, http_port, webapp)
 	try:
 		_log.info("starting HTTP server at port %r", http_port)
