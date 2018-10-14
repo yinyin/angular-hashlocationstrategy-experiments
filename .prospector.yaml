@@ -1,0 +1,13 @@
+autodetect: false
+
+ignore-paths:
+  - dist
+  - docs
+  - rt-sandbox
+  - .rt-deps
+
+pylint:
+  disable:
+    - keyword-arg-before-vararg
+    - too-many-arguments
+    - useless-super-delegation
