@@ -1,0 +1,24 @@
+[submodule "experiments/path-wo-app-base-href"]
+	path = experiments/path-wo-app-base-href
+	url = https://github.com/yinyin/angular-hashlocationstrategy-experiment-x.git
+	branch = master
+[submodule "experiments/path-w-app-base-href"]
+	path = experiments/path-w-app-base-href
+	url = https://github.com/yinyin/angular-hashlocationstrategy-experiment-x.git
+	branch = path-w-app-base-href
+[submodule "experiments/hash-w-app-base-href"]
+	path = experiments/hash-w-app-base-href
+	url = https://github.com/yinyin/angular-hashlocationstrategy-experiment-x.git
+	branch = hash-w-app-base-href
+[submodule "experiments/hash-wo-app-base-href"]
+	path = experiments/hash-wo-app-base-href
+	url = https://github.com/yinyin/angular-hashlocationstrategy-experiment-x.git
+	branch = hash-wo-app-base-href
+[submodule "experiments/proposehash-wo-app-base-href"]
+	path = experiments/proposehash-wo-app-base-href
+	url = https://github.com/yinyin/angular-hashlocationstrategy-experiment-x.git
+	branch = proposehash-wo-app-base-href
+[submodule "experiments/proposehash-w-app-base-href"]
+	path = experiments/proposehash-w-app-base-href
+	url = https://github.com/yinyin/angular-hashlocationstrategy-experiment-x.git
+	branch = proposehash-w-app-base-href
