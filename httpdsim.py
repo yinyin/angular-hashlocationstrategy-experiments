@@ -393,7 +393,9 @@ class HostpageStaticSeperatedLocation(object):
 		comp_name = shift_path_info(environ)
 		if comp_name in ("my", "our"):
 			if check_n_shift_path_prefix(environ, "app"):
-				return self.serv_host_page(environ, start_response)
+				n = shift_path_info(environ)
+				if (not n) or (n == 'index.html'):  # serve ^/(my|our)/app(/index.html)?$
+					return self.serv_host_page(environ, start_response)
 		elif comp_name == "static-content":
 			if check_n_shift_path_prefix(environ, "my-app-s", "data", "ui-file"):
 				return self.serv_static_content(environ, start_response)
