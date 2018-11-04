@@ -299,7 +299,7 @@ class StaticFileHandler(object):
 		if not file_path.startswith(self._root_path):
 			return fill_response_403(start_response)
 		if not isfile(file_path):
-			return fill_response_404(start_response, "Not found (not in static content folder: %s)" % (file_path, ))
+			return fill_response_404(start_response, "Not found (static-content-handling: not found in static content folder: %s)" % (shifted_url_path, ))
 		file_stat = path_stat(file_path)
 		mtime = int(file_stat.st_mtime)
 		last_modify = httpdate_from_timestamp(mtime)
@@ -382,7 +382,7 @@ class HostpageStaticSeperatedLocation(object):
 	def serv_static_content(self, environ, start_response):
 		path_info = environ.get("PATH_INFO", "/")
 		if path_info in ("/", ""):
-			return fill_response_404(start_response, "Not found (access to root of static content folder is forbidden)")
+			return fill_response_404(start_response, "Not found (static-content-handling: access to root of static content folder is forbidden)")
 		return self._static_content_handler(environ, start_response, path_info)
 
 	def __call__(self, environ, start_response):
@@ -399,7 +399,7 @@ class HostpageStaticSeperatedLocation(object):
 		elif comp_name == "static-content":
 			if check_n_shift_path_prefix(environ, "my-app-s", "data", "ui-file"):
 				return self.serv_static_content(environ, start_response)
-		return fill_response_404(start_response, "Not found (no matched route: %s)" % (path_info, ))
+		return fill_response_404(start_response, "Not found (routing: no matching route: %s)" % (path_info, ))
 
 
 _HELP_TEXT = """
