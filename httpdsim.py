@@ -349,6 +349,14 @@ def translate_host_page(file_path):
 				yield l
 
 
+def strip_host_page_base_href(file_path):
+	with open(file_path, "r") as fp:
+		for l in fp:
+			m = TRAP_BASEHREF.search(l)
+			if not m:
+				yield l
+
+
 def fetch_file(file_path):
 	with open(file_path, "r") as fp:
 		for l in fp:
@@ -379,6 +387,13 @@ class HostpageStaticSeperatedLocation(object):
 			return fetch_file(p)
 		return translate_host_page(p)
 
+	def serv_host_page_wo_base_href(self, environ, start_response):  # pylint: disable=unused-argument
+		start_response('200 OK', HEADER_NO_CACHE + [
+				("Content-Type", "text/html"),
+		])
+		p = joinpath(self._dist_folder_path, "index.html")
+		return strip_host_page_base_href(p)
+
 	def serv_static_content(self, environ, start_response):
 		path_info = environ.get("PATH_INFO", "/")
 		if path_info in ("/", ""):
@@ -399,6 +414,11 @@ class HostpageStaticSeperatedLocation(object):
 		elif comp_name == "static-content":
 			if check_n_shift_path_prefix(environ, "my-app-s", "data", "ui-file"):
 				return self.serv_static_content(environ, start_response)
+		elif comp_name == "one-bundle-serve":
+			path_info = environ.get("PATH_INFO", "/")
+			if path_info in ("/", "", "/index.html", "index.html"):
+				return self.serv_host_page_wo_base_href(environ, start_response)
+			return self.serv_static_content(environ, start_response)
 		return fill_response_404(start_response, "Not found (routing: no matching route: %s)" % (path_info, ))
 
 
