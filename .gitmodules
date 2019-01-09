@@ -22,3 +22,11 @@
 	path = experiments/proposehash-w-app-base-href
 	url = https://github.com/yinyin/angular-hashlocationstrategy-experiment-x.git
 	branch = proposehash-w-app-base-href
+[submodule "experiments/angular-hashlocationstrategy-experiment-x"]
+	path = experiments/hash-w-empty-app-base-href
+	url = https://github.com/yinyin/angular-hashlocationstrategy-experiment-x.git
+	branch = hash-w-empty-app-base-href
+[submodule "experiments/proposehash-w-empty-app-base-href"]
+	path = experiments/proposehash-w-empty-app-base-href
+	url = https://github.com/yinyin/angular-hashlocationstrategy-experiment-x.git
+	branch = proposehash-w-empty-app-base-href
