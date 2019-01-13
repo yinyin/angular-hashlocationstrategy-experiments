@@ -1,6 +1,6 @@
 #!/bin/bash
 
-EXPERIMENTS=( 'path-wo-app-base-href' 'path-w-app-base-href' 'hash-wo-app-base-href' 'hash-w-app-base-href' 'proposehash-wo-app-base-href' 'proposehash-w-app-base-href' )
+EXPERIMENTS=( 'path-wo-app-base-href' 'path-w-app-base-href' 'hash-wo-app-base-href' 'hash-w-app-base-href' 'proposehash-wo-app-base-href' 'proposehash-w-app-base-href' 'proposehash-w-empty-app-base-href' 'proposehash2-wo-app-base-href' 'proposehash2-w-app-base-href' 'proposehash2-w-empty-app-base-href' )
 
 set -e
 for experiment in "${EXPERIMENTS[@]}"; do
