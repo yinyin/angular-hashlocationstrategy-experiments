@@ -1,9 +1,6 @@
 # TL;DR
 
-This experiment is subject to explore the way to meet the following condition:
-
-1. Having host page (ie: `index.html`) and other static files (`main.*.js`, `polyfills.*.js`, `asset/*`, ... etc.) serve from different paths.
-2. Perform UI routing with hash location strategy.
+This experiment is subject to explore the way to have host page (ie: `index.html`) and other static files (`main.*.js`, `polyfills.*.js`, `asset/*`, ... etc.) serving from different paths.
 
 The `experiments/` folder contains Angular projects with routing implemented with different combination of location strategy and `APP_BASE_HREF`.
 
@@ -28,8 +25,10 @@ Routing is implemented with the following combinations:
 | path-w-app-base-href           | Path               | Yes    | PathLocationStrategy (w/ `APP_BASE_HREF`)   |
 | hash-wo-app-base-href          | Hash               | No     | HashLocationStrategy (w/o `APP_BASE_HREF`)  |
 | hash-w-app-base-href           | Hash               | Yes    | HashLocationStrategy (w/ `APP_BASE_HREF`)   |
+| hash-w-empty-app-base-href     | Hash               | Yes    | HashLocationStrategy (w/ empty `APP_BASE_HREF`)  |
 | proposehash-wo-app-base-href   | Hash (modified)    | No     | Purposed HashLocationStrategy (w/o `APP_BASE_HREF`)  |
 | proposehash-w-app-base-href    | Hash (modified)    | Yes    | Purposed HashLocationStrategy (w/ `APP_BASE_HREF`)   |
+| proposehash-w-empty-app-base-href | Hash (modified) | Yes    | Purposed HashLocationStrategy (w/ empty `APP_BASE_HREF`) |
 
 A simple HTTP server (`httpdsim.py`) is implemented for simulating the deployment environment of web framework. The listening port can be specify by `--port` option. Assuming the server is started at http://127.0.0.1:8000/:
 
@@ -72,8 +71,10 @@ The application is built with `ng build --prod` and `base-href` is rewritten to 
 | path-w-app-base-href           | Path               | Yes    | http://127.0.0.1:8002/my/app/fruit/some-apples | Success | Failed (note-2) |
 | hash-wo-app-base-href          | Hash               | No     | http://127.0.0.1:8003/static-content/my-app-s/data/ui-file/#/fruit/some-apples (not meeting expected URL) | Success | Failed (note-3) |
 | hash-w-app-base-href           | Hash               | Yes    | http://127.0.0.1:8004/static-content/my-app-s/data/ui-file/#/my/app/fruit/some-apples (not meeting expected URL) | Success | Failed (note-3) |
+| hash-w-empty-app-base-href     | Hash               | Yes    | http://127.0.0.1:8000/static-content/my-app-s/data/ui-file/#/fruit/some-apples (not meeting expected URL) | Success | Failed (note-3) |
 | proposehash-wo-app-base-href   | Hash (modified)    | No     | http://127.0.0.1:8005/static-content/my-app-s/data/ui-file/#/fruit/some-apples (not meeting expected URL) | Success | Failed (note-3) |
 | proposehash-w-app-base-href    | Hash (modified)    | Yes    | http://127.0.0.1:8000/my/app#/fruit/some-apples | Success | Success |
+| proposehash-w-empy-app-base-href | Hash (modified)  | Yes    | http://127.0.0.1:8000/static-content/my-app-s/data/ui-file/#/fruit/some-apples (not meeting expected URL) | Success | Failed (note-3) |
 
 * **note-1**: reject by static content handler - file not found (`${static_folder}/fruit/some-apples`)
 * **note-2**: reject by server-side URL routing - no route for `/my/app/fruit/some-apples`.
